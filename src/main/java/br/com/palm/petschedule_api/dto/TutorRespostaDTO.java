@@ -15,7 +15,7 @@ public record TutorRespostaDTO(
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", timezone = "America/Sao_Paulo")
     LocalDateTime dataHoraCadastro
 ) {
-    public static TutorRespostaDTO fromEntity(Tutor tutor) {
+    public static TutorRespostaDTO toDTO(Tutor tutor) {
         return new TutorRespostaDTO(
             tutor.getId(),
             tutor.getNome(),
