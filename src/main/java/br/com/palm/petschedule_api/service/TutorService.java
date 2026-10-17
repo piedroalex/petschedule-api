@@ -38,7 +38,7 @@ public class TutorService {
         );
 
         Tutor tutorSalvo = tutorRepository.save(tutor);
-        return TutorRespostaDTO.fromEntity(tutorSalvo);
+        return TutorRespostaDTO.toDTO(tutorSalvo);
     }
     
     @Transactional
@@ -55,7 +55,7 @@ public class TutorService {
         tutor.setTelefone(dto.telefone());
 
         Tutor tutorAtualizado = tutorRepository.save(tutor);
-        return TutorRespostaDTO.fromEntity(tutorAtualizado);
+        return TutorRespostaDTO.toDTO(tutorAtualizado);
     }
     
     @Transactional
@@ -70,7 +70,7 @@ public class TutorService {
     public List<TutorRespostaDTO> listarTodos() {
         return tutorRepository.findAll()
                 .stream()
-                .map(TutorRespostaDTO::fromEntity)
+                .map(TutorRespostaDTO::toDTO)
                 .toList();
     }
 
@@ -78,6 +78,6 @@ public class TutorService {
     public TutorRespostaDTO buscarPorId(Long id) {
         Tutor tutor = tutorRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Tutor não encontrado com o ID: " + id));
-        return TutorRespostaDTO.fromEntity(tutor);
+        return TutorRespostaDTO.toDTO(tutor);
     }
 }
