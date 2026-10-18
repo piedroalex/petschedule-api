@@ -3,6 +3,7 @@ package br.com.palm.petschedule_api.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,9 @@ public class TutorService {
 
 	@Autowired
     private TutorRepository tutorRepository;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
     @Transactional
     public TutorRespostaDTO cadastrar(TutorCadastroDTO dto) {
@@ -29,12 +33,14 @@ public class TutorService {
             throw new IllegalArgumentException("CPF já cadastrado no sistema.");
         }
 
+        String senhaCriptografada = passwordEncoder.encode(dto.senha());
+        
         Tutor tutor = new Tutor(
             dto.nome(),
             dto.email(),
             dto.cpf(),
             dto.telefone(),
-            dto.senha()
+            senhaCriptografada
         );
 
         Tutor tutorSalvo = tutorRepository.save(tutor);

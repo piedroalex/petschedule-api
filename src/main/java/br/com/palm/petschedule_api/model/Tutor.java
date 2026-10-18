@@ -30,7 +30,7 @@ public class Tutor {
     @Column(nullable = false, length = 20)
     private String telefone;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 100)
     private String senha;
 
     @Column(nullable = false, updatable = false)
