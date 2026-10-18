@@ -7,6 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.palm.petschedule_api.dto.LoginDTO;
 import br.com.palm.petschedule_api.dto.TutorAtualizaDTO;
 import br.com.palm.petschedule_api.dto.TutorCadastroDTO;
 import br.com.palm.petschedule_api.dto.TutorRespostaDTO;
@@ -84,6 +85,16 @@ public class TutorService {
     public TutorRespostaDTO buscarPorId(Long id) {
         Tutor tutor = tutorRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Tutor não encontrado com o ID: " + id));
+        return TutorRespostaDTO.toDTO(tutor);
+    }
+    
+    @Transactional(readOnly = true)
+    public TutorRespostaDTO autenticar(LoginDTO dto) {
+        Tutor tutor = tutorRepository.findByEmail(dto.email())
+                .orElseThrow(() -> new IllegalArgumentException("E-mail inválido ou não cadastrado."));
+        if (!passwordEncoder.matches(dto.senha(), tutor.getSenha())) {
+            throw new IllegalArgumentException("A senha está incorreta.");
+        }
         return TutorRespostaDTO.toDTO(tutor);
     }
 }

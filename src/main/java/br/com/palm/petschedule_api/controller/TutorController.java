@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import br.com.palm.petschedule_api.dto.LoginDTO;
 import br.com.palm.petschedule_api.dto.TutorAtualizaDTO;
 import br.com.palm.petschedule_api.dto.TutorCadastroDTO;
 import br.com.palm.petschedule_api.dto.TutorRespostaDTO;
@@ -28,6 +29,12 @@ public class TutorController {
 	@Autowired
     private TutorService tutorService;
 
+	@PostMapping("/login")
+    public ResponseEntity<TutorRespostaDTO> login(@Valid @RequestBody LoginDTO dto) {
+		TutorRespostaDTO tutorAutenticado = tutorService.autenticar(dto);
+        return ResponseEntity.ok(tutorAutenticado);
+    }
+	
     @PostMapping
     public ResponseEntity<TutorRespostaDTO> cadastrar(@Valid @RequestBody TutorCadastroDTO dto) {
         TutorRespostaDTO novoTutor = tutorService.cadastrar(dto);
